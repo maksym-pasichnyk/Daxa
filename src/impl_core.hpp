@@ -27,7 +27,7 @@
 #endif
 
 #include <vulkan/vulkan.h>
-#include "/Users/maxim/Daxa/cmake-build-debug/_deps/vulkanmemoryallocator-src/include/vk_mem_alloc.h"
+#include <vk_mem_alloc.h>
 
 namespace daxa
 {

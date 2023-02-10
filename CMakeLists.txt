@@ -78,12 +78,7 @@ add_library(daxa::daxa ALIAS daxa)
 
 target_compile_features(daxa PUBLIC cxx_std_20)
 
-FetchContent_Declare(VulkanMemoryAllocator URL "https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator/archive/v3.0.1.zip" DOWNLOAD_EXTRACT_TIMESTAMP ON)
-FetchContent_MakeAvailable(VulkanMemoryAllocator)
-
-#target_include_directories(daxa PUBLIC ${VulkanMemoryAllocator_SOURCE_DIR})
-
-#find_package(unofficial-vulkan-memory-allocator CONFIG REQUIRED)
+find_package(unofficial-vulkan-memory-allocator CONFIG REQUIRED)
 find_package(Vulkan REQUIRED)
 
 target_compile_definitions(daxa
@@ -156,8 +151,7 @@ endif()
 target_link_libraries(daxa
 PUBLIC
     Vulkan::Vulkan
-#PRIVATE
-#    VulkanMemoryAllocator
+    unofficial::vulkan-memory-allocator::vulkan-memory-allocator
 )
 
 include(GNUInstallDirs)
