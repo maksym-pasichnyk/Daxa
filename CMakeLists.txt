@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.21)
 
 include(cmake/warnings.cmake)
+include(FetchContent)
 
 if(DAXA_ENABLE_UTILS_FSR2)
     list(APPEND VCPKG_MANIFEST_FEATURES "utils-fsr2")
@@ -77,7 +78,12 @@ add_library(daxa::daxa ALIAS daxa)
 
 target_compile_features(daxa PUBLIC cxx_std_20)
 
-find_package(unofficial-vulkan-memory-allocator CONFIG REQUIRED)
+FetchContent_Declare(VulkanMemoryAllocator URL "https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator/archive/v3.0.1.zip" DOWNLOAD_EXTRACT_TIMESTAMP ON)
+FetchContent_MakeAvailable(VulkanMemoryAllocator)
+
+#target_include_directories(daxa PUBLIC ${VulkanMemoryAllocator_SOURCE_DIR})
+
+#find_package(unofficial-vulkan-memory-allocator CONFIG REQUIRED)
 find_package(Vulkan REQUIRED)
 
 target_compile_definitions(daxa
@@ -148,9 +154,10 @@ if(DAXA_ENABLE_UTILS_TASK_LIST)
 endif()
 
 target_link_libraries(daxa
-    PUBLIC
-    unofficial::vulkan-memory-allocator::vulkan-memory-allocator
+PUBLIC
     Vulkan::Vulkan
+#PRIVATE
+#    VulkanMemoryAllocator
 )
 
 include(GNUInstallDirs)

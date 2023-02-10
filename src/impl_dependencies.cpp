@@ -1,4 +1,5 @@
 #include "impl_core.hpp"
 
 #define VMA_IMPLEMENTATION
-#include <vk_mem_alloc.h>
+#include "/Users/maxim/Daxa/cmake-build-debug/_deps/vulkanmemoryallocator-src/include/vk_mem_alloc.h"
+//#include <vk_mem_alloc.h>
