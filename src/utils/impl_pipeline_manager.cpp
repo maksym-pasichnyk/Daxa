@@ -115,6 +115,7 @@ static constexpr TBuiltInResource DAXA_DEFAULT_BUILTIN_RESOURCE = {
 #include <regex>
 #include <thread>
 #include <utility>
+#include <sstream>
 
 static const std::regex PRAGMA_ONCE_REGEX = std::regex(R"reg(#\s*pragma\s*once\s*)reg");
 static const std::regex REPLACE_REGEX = std::regex(R"reg(\W)reg");
