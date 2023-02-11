@@ -516,7 +516,7 @@ namespace daxa
         }
         extension_names.push_back(VK_KHR_SWAPCHAIN_EXTENSION_NAME);
         extension_names.push_back(VK_EXT_DESCRIPTOR_INDEXING_EXTENSION_NAME);
-        extension_names.push_back(VK_EXT_SHADER_IMAGE_ATOMIC_INT64_EXTENSION_NAME); // might be a problem, intel does not support it at all.
+        // extension_names.push_back(VK_EXT_SHADER_IMAGE_ATOMIC_INT64_EXTENSION_NAME); // might be a problem, intel does not support it at all.
         // extension_names.push_back(VK_EXT_MULTI_DRAW_EXTENSION_NAME);
 
         if (this->info.enable_conservative_rasterization)
