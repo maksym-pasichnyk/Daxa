@@ -24,6 +24,8 @@
 #include <wayland-client.h>
 #define VK_USE_PLATFORM_WAYLAND_KHR
 #endif
+#elif defined(__APPLE__)
+#define VK_USE_PLATFORM_MACOS_MVK
 #endif
 
 #include <vulkan/vulkan.h>

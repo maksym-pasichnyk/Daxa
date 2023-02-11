@@ -83,6 +83,9 @@ namespace daxa
             extension_names.push_back(VK_KHR_WIN32_SURFACE_EXTENSION_NAME);
 #elif defined(__linux__)
             extension_names.push_back(VK_KHR_XLIB_SURFACE_EXTENSION_NAME);
+#elif defined(__APPLE__)
+            extension_names.push_back(VK_MVK_MACOS_SURFACE_EXTENSION_NAME);
+            extension_names.push_back(VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME);
 #else
 // no surface extension
 #endif
@@ -128,7 +131,11 @@ namespace daxa
             VkInstanceCreateInfo const instance_ci = {
                 .sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
                 .pNext = nullptr,
+#if __APPLE__
+                .flags = VK_INSTANCE_CREATE_ENUMERATE_PORTABILITY_BIT_KHR,
+#else
                 .flags = {},
+#endif
                 .pApplicationInfo = &app_info,
                 .enabledLayerCount = static_cast<u32>(enabled_layers.size()),
                 .ppEnabledLayerNames = enabled_layers.data(),
