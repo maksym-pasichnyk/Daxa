@@ -278,6 +278,10 @@ namespace daxa
 
     void write_descriptor_set_buffer(VkDevice vk_device, VkDescriptorSet vk_descriptor_set, VkBuffer vk_buffer, VkDeviceSize offset, VkDeviceSize range, u32 index)
     {
+        if (vk_buffer == nullptr) {
+            // Wait, what?
+            return;
+        }
         VkDescriptorBufferInfo const vk_descriptor_image_info{
             .buffer = vk_buffer,
             .offset = offset,
@@ -302,6 +306,11 @@ namespace daxa
 
     void write_descriptor_set_image(VkDevice vk_device, VkDescriptorSet vk_descriptor_set, VkImageView vk_image_view, ImageUsageFlags usage, u32 index)
     {
+        if (vk_image_view == nullptr) {
+            // Wait, what?
+            return;
+        }
+        
         u32 descriptor_set_write_count = 0;
         std::array<VkWriteDescriptorSet, 2> descriptor_set_writes = {};
 

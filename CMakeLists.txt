@@ -3,6 +3,11 @@ cmake_minimum_required(VERSION 3.21)
 include(cmake/warnings.cmake)
 include(FetchContent)
 
+set(DAXA_ENABLE_TESTS ON)
+set(DAXA_ENABLE_UTILS_IMGUI ON)
+set(DAXA_ENABLE_UTILS_TASK_LIST ON)
+set(DAXA_ENABLE_UTILS_PIPELINE_MANAGER_GLSLANG ON)
+
 if(DAXA_ENABLE_UTILS_FSR2)
     list(APPEND VCPKG_MANIFEST_FEATURES "utils-fsr2")
 endif()

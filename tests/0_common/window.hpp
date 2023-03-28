@@ -9,6 +9,9 @@ using HWND = void *;
 #elif defined(__linux__)
 #define GLFW_EXPOSE_NATIVE_X11
 #define GLFW_EXPOSE_NATIVE_WAYLAND
+#elif defined(__APPLE__)
+#define GLFW_EXPOSE_NATIVE_COCOA
+#define GLFW_EXPOSE_NATIVE_NSGL
 #endif
 #include <GLFW/glfw3native.h>
 
@@ -74,6 +77,8 @@ struct AppWindow
         default:
             return reinterpret_cast<daxa::NativeWindowHandle>(glfwGetX11Window(glfw_window_ptr));
         }
+#elif defined(__APPLE__)
+        return reinterpret_cast<daxa::NativeWindowHandle>(glfw_window_ptr);//glfwGetCocoaWindow(glfw_window_ptr));
 #endif
     }
 

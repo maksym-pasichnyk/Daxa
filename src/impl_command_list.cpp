@@ -5,6 +5,10 @@
 #include "impl_split_barrier.hpp"
 #include "impl_device.hpp"
 
+#include <vulkan/vulkan.hpp>
+
+extern vk::DispatchLoaderDynamic vk_dispatch_loader;
+
 namespace daxa
 {
     auto get_vk_image_memory_barrier(ImageBarrierInfo const & image_barrier, VkImage vk_image) -> VkImageMemoryBarrier2
@@ -735,6 +739,9 @@ namespace daxa
                 .pImageMemoryBarriers = image_barrier_batch.data(),
             };
 
+            // assert(vkCmdPipelineBarrier2 != nullptr);
+            static PFN_vkCmdPipelineBarrier2 vkCmdPipelineBarrier2 = 
+                (PFN_vkCmdPipelineBarrier2)vkGetDeviceProcAddr(impl_device.as<ImplDevice>()->vk_device, "vkCmdPipelineBarrier2KHR");
             vkCmdPipelineBarrier2(vk_cmd_buffer, &vk_dependency_info);
 
             memory_barrier_batch_count = 0;

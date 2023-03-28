@@ -2,8 +2,15 @@
 #include "impl_context.hpp"
 #include "impl_device.hpp"
 
+#include <vulkan/vulkan.hpp>
+
 #include <chrono>
 #include <utility>
+
+#include <GLFW/glfw3.h>
+
+vk::DynamicLoader vk_dynamic_loader;
+vk::DispatchLoaderDynamic vk_dispatch_loader;
 
 namespace daxa
 {
@@ -72,19 +79,28 @@ namespace daxa
         std::vector<char const *> enabled_layers{};
         std::vector<char const *> extension_names{};
         {
-            if (this->info.enable_validation)
+            // if (this->info.enable_validation)
             {
                 enabled_layers.push_back("VK_LAYER_KHRONOS_validation");
             }
-            extension_names.push_back(VK_KHR_SURFACE_EXTENSION_NAME);
+            enabled_layers.push_back("VK_LAYER_KHRONOS_synchronization2");
+            // extension_names.push_back(VK_KHR_SURFACE_EXTENSION_NAME);
+
+            u32 glfw_extension_count = 0;
+            const char** glfw_extensions = glfwGetRequiredInstanceExtensions(&glfw_extension_count);
+            for (u32 i = 0; i < glfw_extension_count; i++) {
+                extension_names.push_back(glfw_extensions[i]);
+            }
+
             extension_names.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
 
+
 #if defined(WIN32)
-            extension_names.push_back(VK_KHR_WIN32_SURFACE_EXTENSION_NAME);
+            // extension_names.push_back(VK_KHR_WIN32_SURFACE_EXTENSION_NAME);
 #elif defined(__linux__)
-            extension_names.push_back(VK_KHR_XLIB_SURFACE_EXTENSION_NAME);
+            // extension_names.push_back(VK_KHR_XLIB_SURFACE_EXTENSION_NAME);
 #elif defined(__APPLE__)
-            extension_names.push_back(VK_MVK_MACOS_SURFACE_EXTENSION_NAME);
+            // extension_names.push_back(VK_MVK_MACOS_SURFACE_EXTENSION_NAME);
             extension_names.push_back(VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME);
 #else
 // no surface extension
@@ -115,7 +131,7 @@ namespace daxa
             vkEnumerateInstanceLayerProperties(&instance_layer_count, nullptr);
             instance_layers.resize(instance_layer_count);
             vkEnumerateInstanceLayerProperties(&instance_layer_count, instance_layers.data());
-            check_layers(enabled_layers, instance_layers);
+            // check_layers(enabled_layers, instance_layers);
         }
 
         {
@@ -142,7 +158,12 @@ namespace daxa
                 .enabledExtensionCount = static_cast<u32>(extension_names.size()),
                 .ppEnabledExtensionNames = extension_names.data(),
             };
+
+            vk_dispatch_loader.init(vk_dynamic_loader.getProcAddress<PFN_vkGetInstanceProcAddr>("vkGetInstanceProcAddr"));
+
             vkCreateInstance(&instance_ci, nullptr, &vk_instance);
+
+            vk_dispatch_loader.init(vk_instance);
         }
 
         if (this->info.enable_validation)
